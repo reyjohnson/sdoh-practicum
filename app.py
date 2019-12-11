@@ -13,7 +13,7 @@ def handle_form():
 
     if request.method == 'POST':
         print(request.form)
-        return "OK", 200
+        return "Questionnaire Received", 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
