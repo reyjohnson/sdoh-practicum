@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <form action="{{ url_for('handle_form') }}" method="post">
+        {% for group in questionnaire.groups %}
+            {% for question in group.questions %}
+                {% if question.type == 'string' %}
+                    <div class="form-group">
+                        <label for="{{ question.uuid }}">{{ question.text }}</label>
+                        <input type="text" class="form-control" id="{{ question.uuid }}" name="{{ question.link_id }}" placeholder="">
+                    </div>
+                {% elif question.type == 'choice' %}
+                    {{ question.text }}
+                    <br>
+                    <select class="form-control" name="{{ question.link_id }}">
+                        <option disabled selected value> -- select an option -- </option>
+                        {% for option in question.answer_options %}
+                            <option value="{{ option.coded_value }}">{{ option.text_display }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+
+                {% elif question.type == 'decimal' %}
+                    {{ question.text }}
+                    <br>
+                    <input type="number" class="form-control" name="{{ question.link_id }}"><br>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <input type="submit">
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

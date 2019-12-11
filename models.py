@@ -1,4 +1,5 @@
 import json
+import uuid
 
 class Questionnaire:
     def __init__(self, serialized):
@@ -79,6 +80,7 @@ class QuestionGroup:
 
 class Question:
     def __init__(self, serialized):
+        self.uuid = str(uuid.uuid1())
         self.text = ""
         self.type = None
         self.code = None
@@ -115,21 +117,25 @@ class Question:
 
     def generate_form(self):
         html = None
+        question_uuid = str(uuid.uuid1())
 
         if self.type == 'string':
-            html = f'{self.text}<br>' \
-                   f'<input type="text"><br>'
+            html = f'<div class="form-group">' \
+                   f'<label for="{question_uuid}">{self.text}</label>' \
+                   f'<input type="text" class="form-control" id="{question_uuid}" placeholder="">' \
+                   f'</div>'
 
         elif self.type == 'choice':
             html = f'{self.text}<br>' \
-                   f'<select name="{self.link_id}">' \
+                   f'<select class="form-control" name="{self.link_id}">' \
+                   f'<option disabled selected value> -- select an option -- </option>' \
                    f'{"".join([x.generate_form() for x in self.answer_options])}' \
                    f'</select>' \
                    f'<br>'
 
         elif self.type == 'decimal':
             html = f'{self.text}<br>' \
-                   f'<input type="number"><br>'
+                   f'<input type="number" class="form-control"><br>'
 
         return html
 
