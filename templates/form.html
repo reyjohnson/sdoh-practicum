@@ -7,8 +7,12 @@
 </head>
 <body>
 <div class="container">
+    <h2>{{ questionnaire.title }}</h2>
+    <h5>Patient: Last, First</h5>
+    <br>
     <form action="{{ url_for('handle_form') }}" method="post">
         {% for group in questionnaire.groups %}
+            <h4>{{ group.text }}</h4>
             {% for question in group.questions %}
                 {% if question.type == 'string' %}
                     <div class="form-group">
